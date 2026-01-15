@@ -1,0 +1,13 @@
+name: Survey Submission
+
+on:
+  repository_dispatch:
+    types: [survey-submission]
+
+jobs:
+  save-survey:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Save payload
+        run: |
+          echo '${{ toJson(github.event.client_payload) }}'
