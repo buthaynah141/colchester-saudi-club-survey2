@@ -40,68 +40,18 @@
 
       const [isSubmitting, setIsSubmitting] = useState(false);
 
-      const activities = [
-        'أنشطة ثقافية',
-        'أنشطة رياضية',
-        'أنشطة اجتماعية',
-        'محاضرات وورش عمل',
-        'رحلات ترفيهية',
-        'فعاليات عائلية',
-        'أنشطة دينية'
-      ];
+      // ===== Options =====
+      const activities = ['أنشطة ثقافية','أنشطة رياضية','أنشطة اجتماعية','محاضرات وورش عمل','رحلات ترفيهية','فعاليات عائلية','أنشطة دينية'];
 
-      const culturalOptions = [
-        'الاحتفال بالمناسبات الوطنية',
-        'الأمسيات الشعرية والأدبية',
-        'المعارض الفنية والتراثية',
-        'تعليم اللغة العربية للأبناء',
-        'دروس الخط العربي والفنون التقليدية'
-      ];
+      const culturalOptions = ['الاحتفال بالمناسبات الوطنية','الأمسيات الشعرية والأدبية','المعارض الفنية والتراثية','تعليم اللغة العربية للأبناء','دروس الخط العربي والفنون التقليدية'];
+      const socialOptions = ['لقاءات تعارف دورية','حفلات استقبال الطلاب الجدد','تجمعات القهوة والشاي','فعاليات الطبخ الجماعي','احتفالات الأعياد والمناسبات'];
+      const sportsOptions = ['كرة القدم','كرة السلة','السباحة','رياضة المشي والجري','اليوغا واللياقة البدنية','تنس الطاولة'];
+      const educationalOptions = ['ورش عمل أكاديمية','دورات تطوير المهارات','محاضرات توعوية','جلسات دعم الطلاب المستجدين','برامج التوجيه المهني'];
 
-      const socialOptions = [
-        'لقاءات تعارف دورية',
-        'حفلات استقبال الطلاب الجدد',
-        'تجمعات القهوة والشاي',
-        'فعاليات الطبخ الجماعي',
-        'احتفالات الأعياد والمناسبات'
-      ];
+      const expectations = ['توفير بيئة اجتماعية داعمة','تنظيم فعاليات منتظمة','المساعدة في التأقلم مع الحياة في بريطانيا','ربط الطلاب ببعضهم البعض','تقديم الدعم الإداري والاستشاري','الحفاظ على الهوية الثقافية السعودية','توفير معلومات عن الخدمات المحلية','تمثيل الطلاب أمام الجهات الرسمية'];
+      const communicationMethods = ['مجموعات واتساب','حسابات وسائل التواصل الاجتماعي','البريد الإلكتروني','موقع إلكتروني للنادي','اجتماعات دورية'];
 
-      const sportsOptions = [
-        'كرة القدم',
-        'كرة السلة',
-        'السباحة',
-        'رياضة المشي والجري',
-        'اليوغا واللياقة البدنية',
-        'تنس الطاولة'
-      ];
-
-      const educationalOptions = [
-        'ورش عمل أكاديمية',
-        'دورات تطوير المهارات',
-        'محاضرات توعوية',
-        'جلسات دعم الطلاب المستجدين',
-        'برامج التوجيه المهني'
-      ];
-
-      const expectations = [
-        'توفير بيئة اجتماعية داعمة',
-        'تنظيم فعاليات منتظمة',
-        'المساعدة في التأقلم مع الحياة في بريطانيا',
-        'ربط الطلاب ببعضهم البعض',
-        'تقديم الدعم الإداري والاستشاري',
-        'الحفاظ على الهوية الثقافية السعودية',
-        'توفير معلومات عن الخدمات المحلية',
-        'تمثيل الطلاب أمام الجهات الرسمية'
-      ];
-
-      const communicationMethods = [
-        'مجموعات واتساب',
-        'حسابات وسائل التواصل الاجتماعي',
-        'البريد الإلكتروني',
-        'موقع إلكتروني للنادي',
-        'اجتماعات دورية'
-      ];
-
+      // ===== Helpers =====
       const toggleCheckbox = (category, value) => {
         setFormData(prev => ({
           ...prev,
@@ -111,6 +61,23 @@
         }));
       };
 
+      const CheckboxItem = ({ checked, onClick, label }) => (
+        <div onClick={onClick} className="flex items-start gap-2 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors">
+          {checked ? (
+            <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x={3} y={3} width={18} height={18} rx={2} ry={2} strokeWidth={2}/>
+              <polyline points="9 11 12 14 16 10" strokeWidth={2}/>
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x={3} y={3} width={18} height={18} rx={2} ry={2} strokeWidth={2}/>
+            </svg>
+          )}
+          <span className="text-gray-700">{label}</span>
+        </div>
+      );
+
+      // ===== Submit =====
       const handleSubmit = async () => {
         if (!formData.gender || !formData.age || !formData.studyLevel) {
           alert('الرجاء إكمال المعلومات الشخصية الأساسية');
@@ -119,7 +86,7 @@
 
         setIsSubmitting(true);
 
-        const formattedData = {
+        const payload = {
           timestamp: new Date().toISOString(),
           personalInfo: {
             gender: formData.gender,
@@ -147,7 +114,7 @@
           const response = await fetch('/.netlify/functions/submit-survey', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formattedData)
+            body: JSON.stringify(payload)
           });
 
           if (!response.ok) throw new Error('فشل الإرسال');
@@ -180,58 +147,26 @@
         }
       };
 
-      const CheckboxItem = ({ checked, onClick, label }) => (
-        <div 
-          onClick={onClick}
-          className="flex items-start gap-2 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors"
-        >
-          {checked ? (
-            <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2"/>
-              <polyline points="9 11 12 14 16 10" strokeWidth="2"/>
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2"/>
-            </svg>
-          )}
-          <span className="text-gray-700">{label}</span>
-        </div>
-      );
-
+      // ===== Render =====
       return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-4 md:p-8">
           <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-8 text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-3">
-                استبيان النادي السعودي - كولشيستر
-              </h1>
-              <p className="text-green-50 text-lg">
-                نود معرفة آرائكم وتوقعاتكم لتطوير أنشطة النادي
-              </p>
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">استبيان النادي السعودي - كولشيستر</h1>
+              <p className="text-green-50 text-lg">نود معرفة آرائكم وتوقعاتكم لتطوير أنشطة النادي</p>
             </div>
 
             <div className="p-8 space-y-8">
 
-              {/* ===== المعلومات الشخصية ===== */}
+              {/* المعلومات الشخصية */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
-                  المعلومات الشخصية
-                </h2>
-                
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">المعلومات الشخصية</h2>
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">الجنس</label>
                   <div className="flex gap-4">
-                    {['ذكر', 'أنثى'].map(option => (
+                    {['ذكر','أنثى'].map(option => (
                       <label key={option} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="gender"
-                          value={option}
-                          checked={formData.gender === option}
-                          onChange={(e) => setFormData({...formData, gender: e.target.value})}
-                          className="w-4 h-4 text-green-600"
-                        />
+                        <input type="radio" name="gender" value={option} checked={formData.gender === option} onChange={(e)=>setFormData({...formData, gender:e.target.value})} className="w-4 h-4 text-green-600"/>
                         <span className="text-gray-700">{option}</span>
                       </label>
                     ))}
@@ -240,11 +175,7 @@
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">الفئة العمرية</label>
-                  <select
-                    value={formData.age}
-                    onChange={(e) => setFormData({...formData, age: e.target.value})}
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
-                  >
+                  <select value={formData.age} onChange={(e)=>setFormData({...formData, age:e.target.value})} className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none">
                     <option value="">اختر الفئة العمرية</option>
                     <option value="18-24">18-24</option>
                     <option value="25-30">25-30</option>
@@ -255,11 +186,7 @@
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">المرحلة الدراسية</label>
-                  <select
-                    value={formData.studyLevel}
-                    onChange={(e) => setFormData({...formData, studyLevel: e.target.value})}
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
-                  >
+                  <select value={formData.studyLevel} onChange={(e)=>setFormData({...formData, studyLevel:e.target.value})} className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none">
                     <option value="">اختر المرحلة الدراسية</option>
                     <option value="foundation">السنة التحضيرية</option>
                     <option value="bachelor">بكالوريوس</option>
@@ -270,120 +197,50 @@
                 </div>
               </div>
 
-              {/* ===== الأنشطة المفضلة ===== */}
+              {/* الأنشطة المفضلة */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
-                  الأنشطة المفضلة
-                </h2>
-
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">الأنشطة المفضلة</h2>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-3">
-                    ما نوع الأنشطة التي تهمك؟ (يمكن اختيار أكثر من إجابة)
-                  </label>
-                  <div className="space-y-2">
-                    {activities.map(activity => (
-                      <CheckboxItem
-                        key={activity}
-                        checked={formData.activities.includes(activity)}
-                        onClick={() => toggleCheckbox('activities', activity)}
-                        label={activity}
-                      />
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-3">ما نوع الأنشطة التي تهمك؟ (يمكن اختيار أكثر من إجابة)</label>
+                  <div className="space-y-2">{activities.map(a=> <CheckboxItem key={a} checked={formData.activities.includes(a)} onClick={()=>toggleCheckbox('activities',a)} label={a}/>)}</div>
                 </div>
 
-                {/* Cultural Activities */}
+                {/* Conditional Sections */}
                 {formData.activities.includes('أنشطة ثقافية') && (
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-3">
-                      الأنشطة الثقافية المفضلة:
-                    </label>
-                    <div className="space-y-2">
-                      {culturalOptions.map(option => (
-                        <CheckboxItem
-                          key={option}
-                          checked={formData.culturalActivities.includes(option)}
-                          onClick={() => toggleCheckbox('culturalActivities', option)}
-                          label={option}
-                        />
-                      ))}
-                    </div>
+                    <label className="block text-gray-700 font-semibold mb-3">الأنشطة الثقافية المفضلة:</label>
+                    <div className="space-y-2">{culturalOptions.map(c => <CheckboxItem key={c} checked={formData.culturalActivities.includes(c)} onClick={()=>toggleCheckbox('culturalActivities',c)} label={c}/>)}</div>
                   </div>
                 )}
 
-                {/* Social Activities */}
                 {formData.activities.includes('أنشطة اجتماعية') && (
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-3">
-                      الأنشطة الاجتماعية المفضلة:
-                    </label>
-                    <div className="space-y-2">
-                      {socialOptions.map(option => (
-                        <CheckboxItem
-                          key={option}
-                          checked={formData.socialActivities.includes(option)}
-                          onClick={() => toggleCheckbox('socialActivities', option)}
-                          label={option}
-                        />
-                      ))}
-                    </div>
+                    <label className="block text-gray-700 font-semibold mb-3">الأنشطة الاجتماعية المفضلة:</label>
+                    <div className="space-y-2">{socialOptions.map(s => <CheckboxItem key={s} checked={formData.socialActivities.includes(s)} onClick={()=>toggleCheckbox('socialActivities',s)} label={s}/>)}</div>
                   </div>
                 )}
 
-                {/* Sports Activities */}
                 {formData.activities.includes('أنشطة رياضية') && (
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-3">
-                      الأنشطة الرياضية المفضلة:
-                    </label>
-                    <div className="space-y-2">
-                      {sportsOptions.map(option => (
-                        <CheckboxItem
-                          key={option}
-                          checked={formData.sportsActivities.includes(option)}
-                          onClick={() => toggleCheckbox('sportsActivities', option)}
-                          label={option}
-                        />
-                      ))}
-                    </div>
+                    <label className="block text-gray-700 font-semibold mb-3">الأنشطة الرياضية المفضلة:</label>
+                    <div className="space-y-2">{sportsOptions.map(s => <CheckboxItem key={s} checked={formData.sportsActivities.includes(s)} onClick={()=>toggleCheckbox('sportsActivities',s)} label={s}/>)}</div>
                   </div>
                 )}
 
-                {/* Educational Activities */}
                 {formData.activities.includes('محاضرات وورش عمل') && (
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-3">
-                      المواضيع التعليمية المفضلة:
-                    </label>
-                    <div className="space-y-2">
-                      {educationalOptions.map(option => (
-                        <CheckboxItem
-                          key={option}
-                          checked={formData.educationalActivities.includes(option)}
-                          onClick={() => toggleCheckbox('educationalActivities', option)}
-                          label={option}
-                        />
-                      ))}
-                    </div>
+                    <label className="block text-gray-700 font-semibold mb-3">المواضيع التعليمية المفضلة:</label>
+                    <div className="space-y-2">{educationalOptions.map(e => <CheckboxItem key={e} checked={formData.educationalActivities.includes(e)} onClick={()=>toggleCheckbox('educationalActivities',e)} label={e}/>)}</div>
                   </div>
                 )}
               </div>
 
-              {/* ===== Preferences & Participation ===== */}
+              {/* Preferences & Participation */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
-                  التفضيلات والمشاركة
-                </h2>
-
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">التفضيلات والمشاركة</h2>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    كم مرة تفضل إقامة الفعاليات؟
-                  </label>
-                  <select
-                    value={formData.eventFrequency}
-                    onChange={(e) => setFormData({...formData, eventFrequency: e.target.value})}
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
-                  >
+                  <label className="block text-gray-700 font-semibold mb-2">كم مرة تفضل إقامة الفعاليات؟</label>
+                  <select value={formData.eventFrequency} onChange={(e)=>setFormData({...formData,eventFrequency:e.target.value})} className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none">
                     <option value="">اختر التكرار</option>
                     <option value="weekly">أسبوعياً</option>
                     <option value="biweekly">كل أسبوعين</option>
@@ -393,157 +250,64 @@
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-3">
-                    الأوقات المفضلة لإقامة الفعاليات:
-                  </label>
-                  <div className="space-y-2">
-                    {['نهاية الأسبوع (السبت والأحد)', 'أيام الأسبوع مساءً', 'أيام الأسبوع نهاراً'].map(time => (
-                      <CheckboxItem
-                        key={time}
-                        checked={formData.preferredTime.includes(time)}
-                        onClick={() => toggleCheckbox('preferredTime', time)}
-                        label={time}
-                      />
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-3">الأوقات المفضلة لإقامة الفعاليات:</label>
+                  <div className="space-y-2">{['نهاية الأسبوع (السبت والأحد)','أيام الأسبوع مساءً','أيام الأسبوع نهاراً'].map(t => <CheckboxItem key={t} checked={formData.preferredTime.includes(t)} onClick={()=>toggleCheckbox('preferredTime',t)} label={t}/>)}</div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    هل معك عائلة في كولشيستر؟
-                  </label>
-                  <div className="flex gap-4">
-                    {['نعم', 'لا'].map(option => (
-                      <label key={option} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="familyActivities"
-                          value={option}
-                          checked={formData.familyActivities === option}
-                          onChange={(e) => setFormData({...formData, familyActivities: e.target.value})}
-                          className="w-4 h-4 text-green-600"
-                        />
-                        <span className="text-gray-700">{option}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-2">هل معك عائلة في كولشيستر؟</label>
+                  <div className="flex gap-4">{['نعم','لا'].map(f => <label key={f} className="flex items-center gap-2 cursor-pointer"><input type="radio" name="familyActivities" value={f} checked={formData.familyActivities===f} onChange={e=>setFormData({...formData,familyActivities:e.target.value})} className="w-4 h-4 text-green-600"/><span className="text-gray-700">{f}</span></label>)}</div>
                 </div>
               </div>
 
-              {/* ===== Expectations ===== */}
+              {/* Expectations */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
-                  التوقعات من النادي السعودي
-                </h2>
-
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">التوقعات من النادي السعودي</h2>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-3">
-                    ما هي توقعاتك من النادي السعودي؟ (يمكن اختيار أكثر من إجابة)
-                  </label>
-                  <div className="space-y-2">
-                    {expectations.map(expectation => (
-                      <CheckboxItem
-                        key={expectation}
-                        checked={formData.expectations.includes(expectation)}
-                        onClick={() => toggleCheckbox('expectations', expectation)}
-                        label={expectation}
-                      />
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-3">ما هي توقعاتك من النادي السعودي؟</label>
+                  <div className="space-y-2">{expectations.map(e => <CheckboxItem key={e} checked={formData.expectations.includes(e)} onClick={()=>toggleCheckbox('expectations',e)} label={e}/>)}</div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-3">
-                    طرق التواصل المفضلة:
-                  </label>
-                  <div className="space-y-2">
-                    {communicationMethods.map(method => (
-                      <CheckboxItem
-                        key={method}
-                        checked={formData.communicationMethod.includes(method)}
-                        onClick={() => toggleCheckbox('communicationMethod', method)}
-                        label={method}
-                      />
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-3">طرق التواصل المفضلة:</label>
+                  <div className="space-y-2">{communicationMethods.map(c => <CheckboxItem key={c} checked={formData.communicationMethod.includes(c)} onClick={()=>toggleCheckbox('communicationMethod',c)} label={c}/>)}</div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    هل أنت مهتم بالتطوع في تنظيم الفعاليات؟
-                  </label>
-                  <div className="space-y-2">
-                    {['نعم، أود المشاركة', 'ربما في المستقبل', 'لا، أفضل الحضور فقط'].map(option => (
-                      <label key={option} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="volunteerInterest"
-                          value={option}
-                          checked={formData.volunteerInterest === option}
-                          onChange={(e) => setFormData({...formData, volunteerInterest: e.target.value})}
-                          className="w-4 h-4 text-green-600"
-                        />
-                        <span className="text-gray-700">{option}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <label className="block text-gray-700 font-semibold mb-2">هل أنت مهتم بالتطوع في تنظيم الفعاليات؟</label>
+                  <div className="space-y-2">{['نعم، أود المشاركة','ربما في المستقبل','لا، أفضل الحضور فقط'].map(v => <label key={v} className="flex items-center gap-2 cursor-pointer"><input type="radio" name="volunteerInterest" value={v} checked={formData.volunteerInterest===v} onChange={e=>setFormData({...formData,volunteerInterest:e.target.value})} className="w-4 h-4 text-green-600"/><span className="text-gray-700">{v}</span></label>)}</div>
                 </div>
               </div>
-              {/* ===== Suggestions & Contact Info ===== */}
+
+              {/* Suggestions & Contact */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
-                  الاقتراحات والملاحظات
-                </h2>
-
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">الاقتراحات والملاحظات</h2>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    هل لديك أي اقتراحات أو أفكار لتطوير النادي؟
-                  </label>
-                  <textarea
-                    value={formData.suggestions}
-                    onChange={(e) => setFormData({...formData, suggestions: e.target.value})}
-                    rows="4"
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
-                    placeholder="شاركنا أفكارك واقتراحاتك..."
-                  />
+                  <label className="block text-gray-700 font-semibold mb-2">هل لديك أي اقتراحات أو أفكار لتطوير النادي؟</label>
+                  <textarea value={formData.suggestions} onChange={e=>setFormData({...formData,suggestions:e.target.value})} rows={4} className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none" placeholder="شاركنا أفكارك واقتراحاتك..."/>
                 </div>
-
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    معلومات التواصل (اختياري)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({...formData, contactInfo: e.target.value})}
-                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
-                    placeholder="البريد الإلكتروني أو رقم الواتساب"
-                  />
+                  <label className="block text-gray-700 font-semibold mb-2">معلومات التواصل (اختياري)</label>
+                  <input type="text" value={formData.contactInfo} onChange={e=>setFormData({...formData,contactInfo:e.target.value})} className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none" placeholder="البريد الإلكتروني أو رقم الواتساب"/>
                 </div>
               </div>
 
-              {/* ===== Submit Button ===== */}
+              {/* Submit Button */}
               <div className="pt-4">
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-4 px-6 rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-lg text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
+                <button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-4 px-6 rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-lg text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                   </svg>
                   {isSubmitting ? 'جاري الإرسال...' : 'إرسال الاستبيان'}
                 </button>
               </div>
 
-              {/* ===== Footer ===== */}
-              <p className="text-center text-gray-500 text-sm">
-                شكراً لوقتك ومشاركتك معنا 🇸🇦
-              </p>
+              {/* Footer */}
+              <p className="text-center text-gray-500 text-sm">شكراً لوقتك ومشاركتك معنا 🇸🇦</p>
 
-            </div> {/* End of p-8 space-y-8 */}
-          </div> {/* End of max-w-4xl mx-auto */}
-        </div> {/* End of min-h-screen */}
+            </div>
+          </div>
+        </div>
       );
     }
 
