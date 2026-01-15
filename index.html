@@ -212,8 +212,319 @@
             </div>
 
             <div className="p-8 space-y-8">
-              {/* ... keep all form fields exactly as before ... */}
-              {/* Only change needed: remove GitHub token check */}
+
+              {/* ===== المعلومات الشخصية ===== */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
+                  المعلومات الشخصية
+                </h2>
+                
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">الجنس</label>
+                  <div className="flex gap-4">
+                    {['ذكر', 'أنثى'].map(option => (
+                      <label key={option} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="gender"
+                          value={option}
+                          checked={formData.gender === option}
+                          onChange={(e) => setFormData({...formData, gender: e.target.value})}
+                          className="w-4 h-4 text-green-600"
+                        />
+                        <span className="text-gray-700">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">الفئة العمرية</label>
+                  <select
+                    value={formData.age}
+                    onChange={(e) => setFormData({...formData, age: e.target.value})}
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                  >
+                    <option value="">اختر الفئة العمرية</option>
+                    <option value="18-24">18-24</option>
+                    <option value="25-30">25-30</option>
+                    <option value="31-35">31-35</option>
+                    <option value="36+">36 فأكثر</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">المرحلة الدراسية</label>
+                  <select
+                    value={formData.studyLevel}
+                    onChange={(e) => setFormData({...formData, studyLevel: e.target.value})}
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                  >
+                    <option value="">اختر المرحلة الدراسية</option>
+                    <option value="foundation">السنة التحضيرية</option>
+                    <option value="bachelor">بكالوريوس</option>
+                    <option value="master">ماجستير</option>
+                    <option value="phd">دكتوراه</option>
+                    <option value="language">دورة لغة</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* ===== الأنشطة المفضلة ===== */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
+                  الأنشطة المفضلة
+                </h2>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-3">
+                    ما نوع الأنشطة التي تهمك؟ (يمكن اختيار أكثر من إجابة)
+                  </label>
+                  <div className="space-y-2">
+                    {activities.map(activity => (
+                      <CheckboxItem
+                        key={activity}
+                        checked={formData.activities.includes(activity)}
+                        onClick={() => toggleCheckbox('activities', activity)}
+                        label={activity}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Cultural Activities */}
+                {formData.activities.includes('أنشطة ثقافية') && (
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <label className="block text-gray-700 font-semibold mb-3">
+                      الأنشطة الثقافية المفضلة:
+                    </label>
+                    <div className="space-y-2">
+                      {culturalOptions.map(option => (
+                        <CheckboxItem
+                          key={option}
+                          checked={formData.culturalActivities.includes(option)}
+                          onClick={() => toggleCheckbox('culturalActivities', option)}
+                          label={option}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Social Activities */}
+                {formData.activities.includes('أنشطة اجتماعية') && (
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <label className="block text-gray-700 font-semibold mb-3">
+                      الأنشطة الاجتماعية المفضلة:
+                    </label>
+                    <div className="space-y-2">
+                      {socialOptions.map(option => (
+                        <CheckboxItem
+                          key={option}
+                          checked={formData.socialActivities.includes(option)}
+                          onClick={() => toggleCheckbox('socialActivities', option)}
+                          label={option}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Sports Activities */}
+                {formData.activities.includes('أنشطة رياضية') && (
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <label className="block text-gray-700 font-semibold mb-3">
+                      الأنشطة الرياضية المفضلة:
+                    </label>
+                    <div className="space-y-2">
+                      {sportsOptions.map(option => (
+                        <CheckboxItem
+                          key={option}
+                          checked={formData.sportsActivities.includes(option)}
+                          onClick={() => toggleCheckbox('sportsActivities', option)}
+                          label={option}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Educational Activities */}
+                {formData.activities.includes('محاضرات وورش عمل') && (
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <label className="block text-gray-700 font-semibold mb-3">
+                      المواضيع التعليمية المفضلة:
+                    </label>
+                    <div className="space-y-2">
+                      {educationalOptions.map(option => (
+                        <CheckboxItem
+                          key={option}
+                          checked={formData.educationalActivities.includes(option)}
+                          onClick={() => toggleCheckbox('educationalActivities', option)}
+                          label={option}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ===== Preferences & Participation ===== */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
+                  التفضيلات والمشاركة
+                </h2>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    كم مرة تفضل إقامة الفعاليات؟
+                  </label>
+                  <select
+                    value={formData.eventFrequency}
+                    onChange={(e) => setFormData({...formData, eventFrequency: e.target.value})}
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                  >
+                    <option value="">اختر التكرار</option>
+                    <option value="weekly">أسبوعياً</option>
+                    <option value="biweekly">كل أسبوعين</option>
+                    <option value="monthly">شهرياً</option>
+                    <option value="quarterly">كل ثلاثة أشهر</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-3">
+                    الأوقات المفضلة لإقامة الفعاليات:
+                  </label>
+                  <div className="space-y-2">
+                    {['نهاية الأسبوع (السبت والأحد)', 'أيام الأسبوع مساءً', 'أيام الأسبوع نهاراً'].map(time => (
+                      <CheckboxItem
+                        key={time}
+                        checked={formData.preferredTime.includes(time)}
+                        onClick={() => toggleCheckbox('preferredTime', time)}
+                        label={time}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    هل معك عائلة في كولشيستر؟
+                  </label>
+                  <div className="flex gap-4">
+                    {['نعم', 'لا'].map(option => (
+                      <label key={option} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="familyActivities"
+                          value={option}
+                          checked={formData.familyActivities === option}
+                          onChange={(e) => setFormData({...formData, familyActivities: e.target.value})}
+                          className="w-4 h-4 text-green-600"
+                        />
+                        <span className="text-gray-700">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* ===== Expectations ===== */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
+                  التوقعات من النادي السعودي
+                </h2>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-3">
+                    ما هي توقعاتك من النادي السعودي؟ (يمكن اختيار أكثر من إجابة)
+                  </label>
+                  <div className="space-y-2">
+                    {expectations.map(expectation => (
+                      <CheckboxItem
+                        key={expectation}
+                        checked={formData.expectations.includes(expectation)}
+                        onClick={() => toggleCheckbox('expectations', expectation)}
+                        label={expectation}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-3">
+                    طرق التواصل المفضلة:
+                  </label>
+                  <div className="space-y-2">
+                    {communicationMethods.map(method => (
+                      <CheckboxItem
+                        key={method}
+                        checked={formData.communicationMethod.includes(method)}
+                        onClick={() => toggleCheckbox('communicationMethod', method)}
+                        label={method}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    هل أنت مهتم بالتطوع في تنظيم الفعاليات؟
+                  </label>
+                  <div className="space-y-2">
+                    {['نعم، أود المشاركة', 'ربما في المستقبل', 'لا، أفضل الحضور فقط'].map(option => (
+                      <label key={option} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="volunteerInterest"
+                          value={option}
+                          checked={formData.volunteerInterest === option}
+                          onChange={(e) => setFormData({...formData, volunteerInterest: e.target.value})}
+                          className="w-4 h-4 text-green-600"
+                        />
+                        <span className="text-gray-700">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* ===== Suggestions
+              {/* ===== Suggestions & Contact Info ===== */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-green-500 pb-2">
+                  الاقتراحات والملاحظات
+                </h2>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    هل لديك أي اقتراحات أو أفكار لتطوير النادي؟
+                  </label>
+                  <textarea
+                    value={formData.suggestions}
+                    onChange={(e) => setFormData({...formData, suggestions: e.target.value})}
+                    rows="4"
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                    placeholder="شاركنا أفكارك واقتراحاتك..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    معلومات التواصل (اختياري)
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.contactInfo}
+                    onChange={(e) => setFormData({...formData, contactInfo: e.target.value})}
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none"
+                    placeholder="البريد الإلكتروني أو رقم الواتساب"
+                  />
+                </div>
+              </div>
+
+              {/* ===== Submit Button ===== */}
               <div className="pt-4">
                 <button
                   onClick={handleSubmit}
@@ -227,12 +538,14 @@
                 </button>
               </div>
 
+              {/* ===== Footer ===== */}
               <p className="text-center text-gray-500 text-sm">
                 شكراً لوقتك ومشاركتك معنا 🇸🇦
               </p>
-            </div>
-          </div>
-        </div>
+
+            </div> {/* End of p-8 space-y-8 */}
+          </div> {/* End of max-w-4xl mx-auto */}
+        </div> {/* End of min-h-screen */}
       );
     }
 
