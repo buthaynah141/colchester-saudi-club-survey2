@@ -25,7 +25,10 @@ export async function handler(event) {
       }
     );
 
+    // If GitHub does not return 204, log the response text for debugging
     if (response.status !== 204) {
+      const text = await response.text();
+      console.error('GitHub dispatch failed:', response.status, text);
       throw new Error('GitHub dispatch failed');
     }
 
@@ -35,6 +38,7 @@ export async function handler(event) {
     };
 
   } catch (error) {
+    console.error('Function error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ success: false, message: error.message })
