@@ -10,7 +10,7 @@ export async function handler(event) {
     const payload = JSON.parse(event.body);
 
     const response = await fetch(
-      'https://api.github.com/repos/buthaynah141/colchester-saudi-club-survey/dispatches',
+      'https://api.github.com/repos/buthaynah141/colchester-saudi-club-survey2/dispatches',
       {
         method: 'POST',
         headers: {
