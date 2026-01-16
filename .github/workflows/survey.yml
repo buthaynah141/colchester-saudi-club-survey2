@@ -8,12 +8,6 @@ jobs:
   save-survey:
     runs-on: ubuntu-latest
     steps:
-      - name: Print survey payload
+      - name: Save payload
         run: |
-          echo "Survey submitted!"
           echo '${{ toJson(github.event.client_payload) }}'
-
-      # Optional: save payload to file in workflow runner
-      - name: Save payload to file
-        run: |
-          echo '${{ toJson(github.event.client_payload) }}' > survey_payload.json
